@@ -1,12 +1,19 @@
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using EcommerceSuplementos.Infrastructure.Data;
+using EcommerceSuplementos.Infrastructure.Repositories;
+using EcommerceSuplementos.Domain.Interfaces.Repositories;
+using EcommerceSuplementos.Api.Services;
+using EcommerceSuplementos.Domain.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Controllers
+// ==========================================================
+// 1️⃣ Controllers + Swagger
+// ==========================================================
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// Swagger configurado
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
@@ -47,9 +54,48 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// ==========================================================
+// 2️⃣ Banco de dados
+// ==========================================================
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// ==========================================================
+// 3️⃣ Repositories
+// ==========================================================
+builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
+builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
+
+// ==========================================================
+// 4️⃣ Services
+// ==========================================================
+builder.Services.AddScoped<IProdutoService, ProdutoService>();
+builder.Services.AddScoped<IPedidoService, PedidoService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IAvaliacaoService, AvaliacaoService>();
+builder.Services.AddScoped<ISimulaçãoService, SimulacaoService>();
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy => policy
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
+// ==========================================================
+// 5️⃣ Build
+// ==========================================================
 var app = builder.Build();
 
-// Swagger sempre ativo (ajuste se quiser s� em Development)
+
+// ==========================================================
+// 6️⃣ Middlewares
+// ==========================================================
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -57,7 +103,8 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
-app.UseHttpsRedirection();
+app.UseCors("AllowAll");
+//app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

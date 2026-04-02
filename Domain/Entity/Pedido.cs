@@ -19,5 +19,8 @@ namespace EcommerceSuplementos.Domain.Entity
         public string Status { get; set; } // Processando, Enviado...
 
         public DateTime DataCriacao { get; set; } = DateTime.Now;
+
+        public ICollection<ItemPedido> ItensPedido { get; set; } = new List<ItemPedido>();
+
     }
 }
