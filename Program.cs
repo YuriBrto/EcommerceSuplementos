@@ -58,7 +58,7 @@ builder.Services.AddSwaggerGen(c =>
 // 2️⃣ Banco de dados
 // ==========================================================
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // ==========================================================
 // 3️⃣ Repositories
@@ -67,6 +67,7 @@ builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
+builder.Services.AddScoped<ICarrinhoRepository, CarrinhoRepository>();
 
 // ==========================================================
 // 4️⃣ Services
@@ -76,6 +77,8 @@ builder.Services.AddScoped<IPedidoService, PedidoService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IAvaliacaoService, AvaliacaoService>();
 builder.Services.AddScoped<ISimulaçãoService, SimulacaoService>();
+builder.Services.AddScoped<ICarrinhoService, CarrinhoService>();
+
 
 
 builder.Services.AddCors(options =>
