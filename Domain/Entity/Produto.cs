@@ -9,19 +9,21 @@ namespace EcommerceSuplementos.Domain.Entity
 
         [Required]
         [MaxLength(150)]
-        public string Nome { get; set; }
+        public string Nome { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(100)]
-        public string Marca { get; set; }
+        public string Marca { get; set; } = string.Empty;
 
         [Required]
         public decimal Preco { get; set; }
 
-        public string Descricao { get; set; }
+        public string? Descricao { get; set; }
+
+        public string? ImagemUrl { get; set; }
 
         [MaxLength(50)]
-        public string Categoria { get; set; } // Whey, Creatina...
+        public string? Categoria { get; set; } // Whey, Creatina...
 
         public bool ContemCafeina { get; set; }
 

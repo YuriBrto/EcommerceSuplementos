@@ -12,11 +12,11 @@ namespace EcommerceSuplementos.Domain.Entity
         public int IdUsuario { get; set; }
 
         [ForeignKey("IdUsuario")]
-        public Usuario Usuario { get; set; }
+        public Usuario? Usuario { get; set; }
 
         public decimal Total { get; set; }
 
-        public string Status { get; set; } // Processando, Enviado...
+        public string Status { get; set; } = "Processando";
 
         public DateTime DataCriacao { get; set; } = DateTime.Now;
 

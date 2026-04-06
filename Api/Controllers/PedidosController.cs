@@ -1,7 +1,9 @@
-﻿using EcommerceSuplementos.Domain.Entity;
+﻿using EcommerceSuplementos.Api.DTOs;
+using EcommerceSuplementos.Domain.Entity;
 using EcommerceSuplementos.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace EcommerceSuplementos.Api.Controllers
 {
@@ -27,9 +29,9 @@ namespace EcommerceSuplementos.Api.Controllers
             Ok(await _service.GetByUsuarioAsync(idUsuario));
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Pedido pedido)
+        public async Task<IActionResult> Post([FromBody] CriarPedidoRequest request)
         {
-            var criado = await _service.CreateAsync(pedido);
+            var criado = await _service.CreateAsync(request);
             return CreatedAtAction(nameof(GetById), new { id = criado.IdPedido }, criado);
         }
 

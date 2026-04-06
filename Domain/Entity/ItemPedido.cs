@@ -12,13 +12,13 @@ namespace EcommerceSuplementos.Domain.Entity
         public int IdPedido { get; set; }
 
         [ForeignKey("IdPedido")]
-        public Pedido Pedido { get; set; }
+        public Pedido? Pedido { get; set; }
 
         [Required]
         public int IdProduto { get; set; }
 
         [ForeignKey("IdProduto")]
-        public Produto Produto { get; set; }
+        public Produto? Produto { get; set; }
 
         public int Quantidade { get; set; }
 

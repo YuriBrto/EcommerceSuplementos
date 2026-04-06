@@ -1,13 +1,15 @@
-﻿using EcommerceSuplementos.Domain.Entity;
+﻿using EcommerceSuplementos.Api.DTOs;
+using EcommerceSuplementos.Domain.Entity;
+using EcommerceSuplementos.Domain.Entity.DTOs;
 
 namespace EcommerceSuplementos.Domain.Interfaces
 {
     public interface IPedidoService
     {
-        Task<IEnumerable<Pedido>> GetAllAsync();
-        Task<Pedido?> GetByIdAsync(int id);
-        Task<IEnumerable<Pedido>> GetByUsuarioAsync(int idUsuario);
-        Task<Pedido> CreateAsync(Pedido pedido);
+        Task<IEnumerable<PedidoResponse>> GetAllAsync();
+        Task<PedidoResponse?> GetByIdAsync(int id);
+        Task<IEnumerable<PedidoResponse>> GetByUsuarioAsync(int idUsuario);
+        Task<PedidoResponse> CreateAsync(CriarPedidoRequest request);
         Task UpdateStatusAsync(int id, string status);
     }
 }

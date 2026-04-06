@@ -34,6 +34,7 @@ namespace EcommerceSuplementos.Api.Services
             existente.Categoria = produto.Categoria;
             existente.ContemCafeina = produto.ContemCafeina;
             existente.Estoque = produto.Estoque;
+            existente.ImagemUrl = produto.ImagemUrl;
 
             await _repo.UpdateAsync(existente);
             await _repo.SaveAsync();
