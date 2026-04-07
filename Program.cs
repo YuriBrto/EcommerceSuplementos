@@ -75,7 +75,25 @@ var app = builder.Build();
 // 7️⃣ Middlewares
 // ==========================================================
 
-// Swagger sempre ativo (pra facilitar teste)
+// 👇 PRIMEIRO: handler de erro
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "text/plain";
+
+        var exceptionHandlerPathFeature =
+            context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>();
+
+        if (exceptionHandlerPathFeature?.Error != null)
+        {
+            await context.Response.WriteAsync(exceptionHandlerPathFeature.Error.ToString());
+        }
+    });
+});
+
+// Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -85,10 +103,10 @@ app.UseSwaggerUI(c =>
 
 app.UseCors("AllowAll");
 
-// NÃO usar HTTPS no Render
 // app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
 app.MapControllers();
 
 // 🔥 ESSENCIAL PRO RENDER
