@@ -10,14 +10,15 @@ namespace EcommerceSuplementos.Infrastructure.Data
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
 
             optionsBuilder.UseNpgsql(
-                "Host=db.xgzqxugihagimrtdpddb.supabase.co;" +
-                "Port=5432;" +
-                "Database=postgres;" +
-                "Username=postgres;" +
-                "Password=Wakandaforever10.;" +
-                "SSL Mode=Require;" +
-                "Trust Server Certificate=true"
-            );
+     "Host=aws-1-us-east-1.pooler.supabase.com;" +
+     "Port=5432;" +
+     "Database=postgres;" +
+     "Username=postgres.xgzqxugihagimrtdpddb;" +
+     "Password=Wakandaforever10.;" +
+     "SSL Mode=Require;" +
+     "Trust Server Certificate=true;" +
+     "Pooling=true"
+ );
 
             return new AppDbContext(optionsBuilder.Options);
         }

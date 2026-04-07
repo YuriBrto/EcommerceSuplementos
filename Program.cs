@@ -27,31 +27,6 @@ builder.Services.AddSwaggerGen(c =>
             Email = "seuemail@email.com"
         }
     });
-
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Description = "Digite: Bearer {seu-token-jwt}",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT"
-    });
-
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
 });
 
 // ==========================================================
@@ -79,8 +54,9 @@ builder.Services.AddScoped<IAvaliacaoService, AvaliacaoService>();
 builder.Services.AddScoped<ISimulaçãoService, SimulacaoService>();
 builder.Services.AddScoped<ICarrinhoService, CarrinhoService>();
 
-
-
+// ==========================================================
+// 5️⃣ CORS
+// ==========================================================
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -91,14 +67,15 @@ builder.Services.AddCors(options =>
 });
 
 // ==========================================================
-// 5️⃣ Build
+// 6️⃣ Build
 // ==========================================================
 var app = builder.Build();
 
+// ==========================================================
+// 7️⃣ Middlewares
+// ==========================================================
 
-// ==========================================================
-// 6️⃣ Middlewares
-// ==========================================================
+// Swagger sempre ativo (pra facilitar teste)
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -107,7 +84,13 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseCors("AllowAll");
-//app.UseHttpsRedirection();
+
+// NÃO usar HTTPS no Render
+// app.UseHttpsRedirection();
+
 app.UseAuthorization();
 app.MapControllers();
-app.Run();
+
+// 🔥 ESSENCIAL PRO RENDER
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+app.Run($"http://0.0.0.0:{port}");
